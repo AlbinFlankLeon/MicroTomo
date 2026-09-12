@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -94,7 +95,7 @@ class MainWindow:
         self.recon = None
         self.metrics: dict = {}
 
-        panel.stateChanged.connect(self.refresh_scene)
+        panel.stateChanged.connect(self._on_scene_edit)
         panel.runRequested.connect(self.run_simulation)
         for rb in (self.rb_true, self.rb_recon, self.rb_both):
             rb.toggled.connect(lambda _c, _rb=rb: self.apply_view_mode())
@@ -107,6 +108,14 @@ class MainWindow:
         return self.panel.get_state()
 
     # ------------------------------------------------------------------ paint
+    def _on_scene_edit(self) -> None:
+        """Any edit invalidates the previous reconstruction (geometry changed)."""
+        if self.recon is not None:
+            self.recon = None
+            self.metrics = {}
+            self.panel.set_results("scene edited — run again to reconstruct")
+        self.refresh_scene()
+
     def refresh_scene(self) -> None:
         try:
             st = self.state
@@ -115,11 +124,18 @@ class MainWindow:
                         transceivers=st.physical_positions())
             self.plotter.clear()
             _draw_scene(self.plotter, view, name="scene")
+            self.plotter.reset_camera()
             self.apply_view_mode()
+            self.plotter.render()
+            n_recon = 0 if view.recon is None else len(view.recon)
+            note = f" · recon {n_recon} pts (none — abortive threshold?)" if n_recon == 0 else ""
             self.status.setText(
                 f"true geometry: {len(scatter)} surface points · "
-                f"{len(st.objects)} objects · {len(view.transceivers)} transceivers")
+                f"{len(st.objects)} objects · {len(view.transceivers)} transceivers"
+                f"{note}")
         except Exception as e:  # keep the app alive on bad geometry
+            print(f"[microtomo] refresh_scene failed: {e!r}", file=sys.stderr)
+            self.panel.set_results(f"refresh error: {e}", ok=False)
             self.status.setText(f"refresh error: {e}")
 
     def apply_view_mode(self) -> None:
@@ -131,6 +147,8 @@ class MainWindow:
             scatter.visibility = self.rb_true.isChecked() or self.rb_both.isChecked()
         if recon is not None:
             recon.visibility = self.rb_recon.isChecked() or self.rb_both.isChecked()
+        if hasattr(self, "plotter") and self.plotter is not None:
+            self.plotter.render()
 
     # ------------------------------------------------------------------ run
     def run_simulation(self) -> None:
@@ -147,7 +165,15 @@ class MainWindow:
             return
         self.recon = recon
         self.metrics = metrics
+        self.rb_both.setChecked(True)          # always reveal the reconstruction
         self.refresh_scene()
+        n = len(recon)
+        if n == 0:
+            self.panel.set_results(
+                "run finished but reconstruction is EMPTY — raise grid / "
+                "add transceivers / check object placement", ok=False)
+            self.status.setText("run produced an empty reconstruction — see panel")
+            return
         self.panel.set_results(
             f"{metrics['mode']} {metrics['n_tx']}×{metrics.get('n_stations', 1)} · "
             f"median {metrics['chamfer_median_cm']:.2f} cm · "
