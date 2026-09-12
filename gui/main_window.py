@@ -49,8 +49,27 @@ class MainWindow:
 
         # ---- left: viewport + view toggle ----
         left = QVBoxLayout()
-        plotter = QtInteractor(central)
-        left.addWidget(plotter.interactor, stretch=1)
+        try:
+            plotter = QtInteractor(central)
+            self.plotter = plotter
+            self.viewer_ok = True
+            configure_viewer(plotter)
+            left.addWidget(plotter.interactor, stretch=1)
+        except Exception as exc:
+            # Never let a broken GL stack take down the app silently.
+            print(f"[microtomo] viewer failed to start: {exc!r}", file=sys.stderr)
+            self.plotter = None
+            self.viewer_ok = False
+            banner = QLabel(
+                "3D viewer failed to start.\n\n"
+                f"Reason: {exc}\n\n"
+                "The simulation panel still works (Run shows metrics below).\n"
+                "To diagnose, launch from a terminal with ./launch_gui.sh and\n"
+                "paste the output, or click 'Viewer diagnostics' above.")
+            banner.setWordWrap(True)
+            banner.setStyleSheet(
+                "color: #922; background: #fdd; padding: 12px; border-radius: 6px;")
+            left.addWidget(banner, stretch=1)
 
         toggle_row = QHBoxLayout()
         self.rb_true = QRadioButton("true geometry")
@@ -61,6 +80,10 @@ class MainWindow:
         toggle_row.addWidget(self.rb_true)
         toggle_row.addWidget(self.rb_recon)
         toggle_row.addWidget(self.rb_both)
+        btn_diag = QPushButton("Viewer diagnostics", central)
+        btn_diag.setToolTip("Print GL renderer info + actor list to the console")
+        btn_diag.clicked.connect(self._viewer_diagnostics)
+        toggle_row.addWidget(btn_diag)
         toggle_row.addStretch(1)
         left.addLayout(toggle_row)
 
@@ -116,7 +139,24 @@ class MainWindow:
             self.panel.set_results("scene edited — run again to reconstruct")
         self.refresh_scene()
 
+    def _viewer_diagnostics(self) -> None:
+        if getattr(self, "plotter", None) is None:
+            self.status.setText("viewer not initialised — nothing to diagnose")
+            return
+        d = viewer_diagnostics(self.plotter)
+        print("[microtomo] viewer diagnostics:", d, file=sys.stderr)
+        msg = f"diagnostics: {len(d['actors'])} actors · off-screen: {d['off_screen']}"
+        if d["gl"]:
+            head = d["gl"].splitlines()[0] if d["gl"].splitlines() else d["gl"]
+            msg += " · " + head
+        if d["error"]:
+            msg += " · error: " + d["error"]
+        self.status.setText(msg)
+
     def refresh_scene(self) -> None:
+        if getattr(self, "plotter", None) is None:
+            self.status.setText("scene paused — 3D viewer unavailable")
+            return
         try:
             st = self.state
             scatter = st.scatter()
@@ -139,6 +179,8 @@ class MainWindow:
             self.status.setText(f"refresh error: {e}")
 
     def apply_view_mode(self) -> None:
+        if getattr(self, "plotter", None) is None:
+            return
         actors = {a.name: a for a in self.plotter.renderer.actors.values()
                   if hasattr(a, "name")}
         scatter = actors.get("scene_scatter")
@@ -221,6 +263,50 @@ def _version() -> str:
         return out.stdout.strip() or "dev"
     except Exception:
         return "dev"
+
+
+def configure_viewer(plotter) -> None:
+    """Explicit interaction setup so the 3D viewport always responds.
+
+    Trackball style = left-drag rotates, scroll zooms, right-drag pans.
+    The viewport widget also takes keyboard focus so shortcuts work.
+    """
+    plotter.set_background("white")
+    try:
+        plotter.enable_trackball_style()
+    except Exception:
+        pass                                   # some backends lack the call
+    try:
+        plotter.interactor.setFocus()
+    except Exception:
+        pass
+
+
+def viewer_diagnostics(plotter) -> dict:
+    """Best-effort snapshot of the 3D context — never raises.
+
+    Lets a remote user report exactly what their GL stack is without us
+    having to reproduce their environment.
+    """
+    info = {"actors": [], "off_screen": None, "gl": None, "error": None}
+    try:
+        actors = getattr(plotter.renderer, "actors", {})
+        info["actors"] = sorted(
+            a.name for a in actors.values() if hasattr(a, "name"))
+    except Exception as exc:
+        info["error"] = f"renderer: {exc!r}"
+        return info
+    ren_win = getattr(plotter, "ren_win", None)
+    if ren_win is None:
+        info["error"] = "no vtkRenderWindow available"
+        return info
+    try:
+        info["off_screen"] = bool(ren_win.GetOffScreenRendering())
+        caps = ren_win.ReportCapabilities() or ""
+        info["gl"] = caps[:800]
+    except Exception as exc:
+        info["error"] = f"gl: {exc!r}"
+    return info
 
 
 def build_editor_window(app):
