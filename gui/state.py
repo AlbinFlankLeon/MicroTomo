@@ -133,6 +133,43 @@ class SimState:
             return np.asarray(self.tx_positions, float)
         return self.default_ring()
 
+
+# ---- transceiver fillers (module-level, deterministic, testable) ----------
+def corners_tx(n: int, chamber_m: float) -> np.ndarray:
+    """n antennas at the ring's cardinal 'corners' (and diagonals if n > 4).
+
+    First 4 sit at 0°/90°/180°/270° on the chamber ring — the classic corner
+    placement for a cylindrical scan. Extra antennas (n > 4) fill diagonal
+    slots on the same ring so positions never degenerate or duplicate.
+    Dimensions: (n, 3) metres, z at mid-height.
+    """
+    r = 0.4 * chamber_m
+    z = chamber_m / 2.0
+    n_cardinal = min(n, 4)
+    angles = np.arange(n_cardinal) * (np.pi / 2.0)
+    if n > 4:
+        diag = np.pi / 4.0 + np.arange(n - 4) * (2.0 * np.pi / (n - 4))
+        angles = np.concatenate([angles, diag])
+    return np.stack([chamber_m / 2 + r * np.cos(angles),
+                     chamber_m / 2 + r * np.sin(angles),
+                     np.full(n, z)], axis=1)
+
+
+def random_tx(n: int, chamber_m: float, seed: int | None = None) -> np.ndarray:
+    """n antennas at uniformly random positions on a disc 90% of the ring.
+
+    Kept off the wall so readings stay clean; z at mid-height.
+    Deterministic for a given seed, so runs stay reproducible if desired.
+    """
+    rng = np.random.default_rng(seed)
+    r = 0.9 * (0.4 * chamber_m)
+    rr = r * np.sqrt(rng.uniform(0.0, 1.0, n))
+    theta = rng.uniform(0.0, 2.0 * np.pi, n)
+    z = chamber_m / 2.0
+    return np.stack([chamber_m / 2 + rr * np.cos(theta),
+                     chamber_m / 2 + rr * np.sin(theta),
+                     np.full(n, z)], axis=1)
+
     def virtual_positions(self) -> np.ndarray:
         """All MIMO positions used by the forward model (scan -> T*n_stations).
 

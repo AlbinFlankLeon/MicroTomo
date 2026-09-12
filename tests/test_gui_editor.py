@@ -46,8 +46,9 @@ def test_panel_edit_object_then_read(panel):
     o.center = [0.03, 0.03, 0.05]
     o.dim = [0.011, 0.012, 0.013]
     panel.set_state(got)
-    panel.cx.setValue(0.033)
-    panel.d2.setValue(0.017)
+    # user-facing units are mm now: 33 mm == 0.033 m
+    panel.cx.setValue(33.0)
+    panel.d2.setValue(17.0)
     panel._emit_changed()
     read = panel.get_state().objects[0]
     assert read.center[0] == pytest.approx(0.033)
