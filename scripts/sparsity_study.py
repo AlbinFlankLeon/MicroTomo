@@ -205,6 +205,13 @@ def build_report(args, rows: list[dict], chamber_m: float, wall: str, elapsed: f
         "For real modules read cost as ~EUR 50-100 per 60 GHz channel "
         "(e.g. Acconeer A121, Infineon BGT60); the scan mode adds a stepper + controller.",
         "",
+        "> **Trust flag (T7 cross-validation):** the 60 GHz gprMax FDTD gate is not "
+        "executable on this hardware (60 GHz forces dx ≈ 0.17 mm ≈ 27M cells), and "
+        "scaled-carrier FDTD is not representative (50 mm box ≈ 1.7 λ at 10 GHz). Per "
+        "the spec fallback the analytical numbers below are **flagged untrusted** until a "
+        "GPU/60 GHz cross-validation exists — treat them as a self-consistent relative "
+        "comparison only. See `reports/analytical_vs_gprmax.md`.",
+        "",
         "## Verdict matrix",
         "",
         "| #Tx | Mode | Stations | mean (cm) | median (cm) | max (cm) | %≤1cm | cost | complexity | verdict |",

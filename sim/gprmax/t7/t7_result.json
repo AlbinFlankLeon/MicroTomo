@@ -1,0 +1,19 @@
+{
+  "gate": "FAIL",
+  "gate_state": "NOT EXECUTABLE (scaled-carrier regime not representative)",
+  "carrier_ghz": 10.0,
+  "band_ghz": [
+    6.0,
+    14.0
+  ],
+  "model": "reflection_surface_scatterers",
+  "corr_envelope": 0.0002,
+  "peak_range_analytical_cm": 3.713,
+  "peak_range_gprmax_cm": 5.332,
+  "peak_range_error_cm": 1.619,
+  "edge_range_error_cm": 1.813,
+  "lambda_mm": 30.0,
+  "box_lambda": 1.67,
+  "why_not_60ghz": "dx <= c/(30*f0) ~ 0.17 mm -> ~27M cells CPU-infeasible",
+  "implication": "spec fallback: 50 cm (and 10 cm) analytical numbers marked UNTRUSTED pending a GPU/60 GHz cross-validation"
+}
