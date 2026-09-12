@@ -20,7 +20,7 @@ DIST_DIR="$ROOT/dist"
 GITHUB_USER="AlbinFlankLeon"
 GITHUB_REPO="MicroTomo"
 REPO_URL="https://github.com/$GITHUB_USER/$GITHUB_REPO"
-RELEASES_URL="$REPO_URL/releases/download"
+RELEASE_URL="$REPO_URL/releases/download/v$VERSION"
 TARBALL="microtomo-$VERSION.tar.gz"
 
 [[ "${1:-}" == "--test" ]] && { echo ">> running test suite…"; .venv/bin/python -m pytest tests/ -q; }
@@ -46,7 +46,7 @@ echo ">> checksums…"
 
 echo ">> generating download page…"
 mkdir -p docs
-python3 - "$VERSION" "$RELEASES_URL/$VERSION/$TARBALL" "$TARBALL" "$REPO_URL" <<'PY' > docs/download.html
+python3 - "$VERSION" "$RELEASE_URL/$TARBALL" "$TARBALL" "$REPO_URL" <<'PY' > docs/download.html
 import sys
 ver, asset_url, asset_name, repo_url = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 html = """<!doctype html>
@@ -82,17 +82,17 @@ html = """<!doctype html>
   <div class="card">
     <h2>Latest release — v%s</h2>
     <p style="margin-top:6px">
-      <a class="btn" href="%s">Download microtomo-%s.tar.gz</a>
+      <a class="btn" href="%s">Download %s</a>
       &nbsp;
-      <a class="btn secondary" href="https://github.com/AlbinFlankLeon/MicroTomo/releases">All releases</a>
+      <a class="btn secondary" href="%s/releases">All releases</a>
     </p>
     <p class="muted">Linux · ~2–5&nbsp;min install · requires Python 3.10+ and a 64-bit system with OpenGL.</p>
     <h3>Install</h3>
-    <pre><code>tar -xzf microtomo-%s.tar.gz &amp;&amp; cd microtomo-%s
+    <pre><code>tar -xzf %s &amp;&amp; cd microtomo-%s
 bash install.sh
 ./launch_gui.sh</code></pre>
     <h3>Verify</h3>
-    <p class="muted">Checksum: <code>dist/SHA256SUMS</code> in the tarball, or run <code>sha256sum microtomo-%s.tar.gz</code>.</p>
+    <p class="muted">Checksum: <code>dist/SHA256SUMS</code> in the tarball, or run <code>sha256sum %s</code>.</p>
   </div>
 
   <div class="card">
@@ -106,14 +106,13 @@ bash install.sh
 
   <div class="card">
     <h2>Development</h2>
-    <p class="muted">Source is on GitHub: <a href="https://github.com/AlbinFlankLeon/MicroTomo">github.com/AlbinFlankLeon/MicroTomo</a>.
+    <p class="muted">Source is on GitHub: <a href="%s">github.com/AlbinFlankLeon/MicroTomo</a>.
        The <code>main</code> branch is the live stable tree; active work happens on <code>dev</code>.</p>
   </div>
 </div>
 </body>
 </html>
-""" % (ver, ver, asset_url, asset_name, asset_name, ver, asset_name, ver, asset_url)
-html = html.replace("https://github.com/AlbinFlankLeon/MicroTomo", repo_url)
+""" % (ver, ver, asset_url, asset_name, repo_url, asset_name, ver, asset_name, ver, asset_url, repo_url)
 sys.stdout.write(html)
 PY
 
