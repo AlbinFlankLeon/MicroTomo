@@ -2,8 +2,7 @@
 # MicroTomo — install as an OS app (XDG desktop entry + icon).
 #
 # Registers a "MicroTomo" entry in the system app menu (CachyOS / Plasma /
-# GNOME / any freedesktop launcher) that opens the Completed Simulation
-# Viewer on the demo package.
+# GNOME / any freedesktop launcher) that opens the interactive editor.
 #
 # Usage:
 #   ./scripts/install_app.sh          # install
@@ -35,8 +34,8 @@ cat > "$DESKTOP_FILE" <<EOF
 [Desktop Entry]
 Type=Application
 Name=MicroTomo
-Comment=60 GHz surface-contour simulation viewer (sparsity study)
-Exec=$ROOT/launch_gui.sh --demo
+Comment=60 GHz surface-contour simulator — edit scenes, place transceivers, run + visualise
+Exec=$ROOT/launch_gui.sh
 Icon=$ICON_FILE
 Terminal=false
 Categories=Science;

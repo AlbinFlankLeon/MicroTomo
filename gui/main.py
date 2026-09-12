@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
-"""MicroTomo — Completed Simulation Viewer (desktop app).
+"""MicroTomo — Completed Simulation Viewer / interactive editor.
 
-PyQt6 + PyVista 3D viewport, side panel with the study metrics. On launch
-(default) it loads the committed demo package from datasets/demo/ and shows
-the true surface + the DAS reconstruction + the metric numbers. A .desktop
-entry is installed by scripts/install_app.sh so it starts from the system app
-menu (CachyOS/any XDG launcher).
+PyQt6 + PyVista 3D viewport. Default: the interactive editor (place + size
+objects, position transceivers, run the forward+DAS pipeline, toggle true vs
+reconstructed geometry). `--demo` opens the flat viewer on the committed demo
+package; `--scene`/`--recon` load a raw point cloud viewer.
 
 Usage:
-    ./launch_gui.sh                     # open viewer on the demo package
-    ./launch_gui.sh --demo              # same
+    ./launch_gui.sh                              # interactive editor
+    ./launch_gui.sh --demo                       # flat demo-package viewer
     ./launch_gui.sh --scene 42 --recon datasets/demo/recon.npy
-    ./launch_gui.sh --smoke             # headless render check (also makes the icon)
+    ./launch_gui.sh --smoke                      # headless render check
 """
 from __future__ import annotations
 
@@ -43,10 +42,12 @@ class View:
 
 def _parse_args(argv: list[str]) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="MicroTomo — simulation viewer")
+    p.add_argument("--editor", action="store_true",
+                   help="open the interactive editor (default = editor)")
     p.add_argument("--demo", action="store_true",
-                   help="load the committed demo package (default if no --scene)")
+                   help="open the flat demo-package viewer instead")
     p.add_argument("--scene", type=str, default=None,
-                   help="integer seed (generate veggie scene) or .npy point cloud")
+                   help="seed or .npy (flat viewer only)")
     p.add_argument("--chamber", choices=["10cm", "50cm"], default="10cm")
     p.add_argument("--transceivers", type=int, default=None)
     p.add_argument("--recon", type=str, default=None, help="DAS recon cloud .npy")
@@ -286,6 +287,13 @@ def main(argv: list[str] | None = None) -> int:
     from PyQt6.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
+    if args.editor or not (args.demo or args.scene):
+        from gui.main_window import build_editor_window
+
+        win = build_editor_window(app)
+        win.show()
+        return app.exec()
+
     win = _build_window(app, args)
     win.show()
     return app.exec()
