@@ -1,0 +1,19 @@
+## Water Vial Benchmark - Mini Domain (50mm cube)
+## MicroTomo Phase 3 - gprMax validation
+## NOTE: Using 10 GHz for water to avoid grid resolution issues at 60 GHz.
+## At 60 GHz, water eps_eff ~ 19 requires dx < 0.15mm (37M cells).
+
+#domain: 50e-3 50e-3 50e-3
+#dx_dy_dz: 0.5e-3 0.5e-3 0.5e-3
+#time_window: 10e-9
+
+#material: 5.2 0 1 0 water_debye
+#add_dispersion_debye: 1 73.1 5.56e-12 water_debye
+
+#waveform: gaussian 1 10e9 mywave
+
+#hertzian_dipole: z 10e-3 25e-3 25e-3 mywave
+
+#cylinder: 25e-3 25e-3 0 25e-3 25e-3 50e-3 15e-3 water_debye
+
+#rx: 40e-3 25e-3 25e-3

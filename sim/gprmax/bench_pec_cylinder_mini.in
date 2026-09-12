@@ -1,0 +1,14 @@
+## PEC Cylinder Benchmark - Mini Domain (50mm cube)
+## MicroTomo Phase 3 - gprMax validation vs Mie
+
+#domain: 50e-3 50e-3 50e-3
+#dx_dy_dz: 0.5e-3 0.5e-3 0.5e-3
+#time_window: 3e-9
+
+#waveform: gaussian 1 60e9 mywave
+
+#hertzian_dipole: z 10e-3 25e-3 25e-3 mywave
+
+#cylinder: 25e-3 25e-3 0 25e-3 25e-3 50e-3 5e-3 pec
+
+#rx: 40e-3 25e-3 25e-3

@@ -1,0 +1,128 @@
+# MicroTomo Canonical Benchmark Definitions
+# Created: Phase 1 — 2026-09-10
+
+domains:
+  mini:
+    description: "Quick iteration test cube (D=50mm)"
+    diameter_mm: 50
+    grid_dx_mm: 0.5
+    estimated_cells: 100000  # 100^3
+    estimated_ram_gb: 0.02
+    estimated_timesteps: 5000
+    use_case: "Development, validation, CI tests"
+
+  full:
+    description: "Target ring array domain (D=200mm)"
+    diameter_mm: 200
+    grid_dx_mm: 0.33
+    estimated_cells: 216000000  # 600^3
+    estimated_ram_gb: 100
+    estimated_timesteps: 20000
+    use_case: "Production runs, accuracy benchmarks"
+
+phantoms:
+  pec_cylinder:
+    description: "Perfect electric conductor cylinder (validation reference)"
+    shape: cylinder
+    radius_mm: 5
+    material: pec
+    epsilon_r: null
+    conductivity: null
+    use_case: "Mie scattering validation — analytical solution available"
+
+  water_vial:
+    description: "Water-filled vial (lossy dielectric)"
+    shape: cylinder
+    radius_mm: 15
+    material: water_debye
+    epsilon_r_static: 78.3
+    epsilon_r_infinity: 5.2
+    relaxation_freq_ghz: 21.4
+    conductivity_sm: 35.0  # @60 GHz
+    use_case: "Lossy dielectric at 60 GHz — tests Debye model + attenuation"
+
+  plastic_glass_stack:
+    description: "Layered low-permittivity materials"
+    layers:
+      - material: plastic_low
+        epsilon_r: 2.1
+        thickness_mm: 5
+      - material: glass
+        epsilon_r: 4.5
+        thickness_mm: 3
+      - material: plastic_med
+        epsilon_r: 8.0
+        thickness_mm: 4
+    use_case: "Low-contrast dielectric resolution test"
+
+  fat_sheath:
+    description: "Fat tissue simulant around water core"
+    outer: {material: fat, epsilon_r: 5.0, radius_mm: 20}
+    inner: {material: water_debye, radius_mm: 10}
+    use_case: "Bio-tissue layered geometry"
+
+sources:
+  ideal_dipole:
+    description: "Point dipole for physics validation (no antenna model needed)"
+    type: soft_electric
+    frequency_ghz: 60.0
+    polarization: z
+    use_case: "Phase 1-3 quick runs"
+
+  patch_60ghz:
+    description: "60 GHz microstrip patch antenna (from openEMS library)"
+    type: microstrip_patch
+    frequency_ghz: 60.0
+    substrate_epsilon_r: 3.4
+    substrate_height_mm: 0.254
+    patch_width_mm: 1.2
+    patch_length_mm: 0.95
+    use_case: "Phase 3+ realistic antenna coupling"
+
+  ricker_uwb:
+    description: "Ricker wavelet for UWB sweep (57-64 GHz)"
+    type: gaussian_derivative
+    center_freq_ghz: 60.5
+    bandwidth_ghz: 7.0  # 57-64 GHz
+    use_case: "UWB reflection tomography"
+
+receivers:
+  ring_8:
+    description: "8-element circular ring"
+    n_elements: 8
+    radius_mm: 100  # for mini domain: 25
+    use_case: "Minimum viable ring array"
+
+  ring_16:
+    description: "16-element circular ring (production)"
+    n_elements: 16
+    radius_mm: 100  # for mini domain: 25
+    use_case: "Production ring array"
+
+frequency_cases:
+  cw_60ghz:
+    description: "60 GHz continuous wave"
+    frequency_ghz: 60.0
+    type: cw
+
+  uwb_57_64:
+    description: "57-64 GHz UWB (Ricker)"
+    type: uwb
+    start_ghz: 57.0
+    end_ghz: 64.0
+
+  cw_10ghz:
+    description: "10 GHz control (versatility test)"
+    frequency_ghz: 10.0
+    type: cw
+
+validation_metrics:
+  mie_scattering:
+    description: "Error vs analytical Mie scattering for PEC sphere/cylinder"
+    s21_magnitude_db_threshold: 3.0
+    s21_phase_deg_threshold: 10.0
+    reference: "Bohren & Huffman Mie series expansion"
+
+  bscan:
+    description: "B-scan time trace plausibility check"
+    criteria: "No spurious reflections, correct arrival time, correct spreading loss"

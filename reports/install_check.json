@@ -1,0 +1,94 @@
+{
+  "python": "3.14.7",
+  "cpu": {
+    "name": "AMD Ryzen 5 3600 6-Core Processor",
+    "cores_logical": 12,
+    "cores_physical": 6,
+    "arch": "x86_64"
+  },
+  "nvidia": null,
+  "amd": {
+    "vendor": "AMD/OpenCL",
+    "name": "Device Name                                     AMD Radeon RX 5700 XT (radeonsi, navi10, ACO, DRM 3.64, 6.18.48-1-cachyos-lts)"
+  },
+  "opencl_devices": [],
+  "mpi": {
+    "binary": true,
+    "mpi4py": false,
+    "version": ""
+  },
+  "tools": {
+    "gprMax": {
+      "import_name": "gprmax",
+      "installed": false,
+      "version": null,
+      "import_ok": false,
+      "gpu_ok": true,
+      "python_api": true,
+      "cuda_support": true,
+      "opencl_support": true,
+      "mpi_support": false,
+      "notes": ""
+    },
+    "torchfdtd": {
+      "import_name": "torchfdtd",
+      "installed": false,
+      "version": null,
+      "import_ok": false,
+      "gpu_ok": false,
+      "python_api": true,
+      "cuda_support": true,
+      "opencl_support": false,
+      "mpi_support": false,
+      "notes": ""
+    },
+    "jaxfdtd": {
+      "import_name": "jaxfdtd",
+      "installed": false,
+      "version": null,
+      "import_ok": false,
+      "gpu_ok": false,
+      "python_api": true,
+      "cuda_support": true,
+      "opencl_support": false,
+      "mpi_support": false,
+      "notes": ""
+    },
+    "FEniCSx": {
+      "import_name": "dolfinx",
+      "installed": false,
+      "version": null,
+      "import_ok": false,
+      "gpu_ok": false,
+      "python_api": true,
+      "cuda_support": false,
+      "opencl_support": false,
+      "mpi_support": true,
+      "notes": ""
+    },
+    "Sionna": {
+      "import_name": "sionna",
+      "installed": false,
+      "version": null,
+      "import_ok": false,
+      "gpu_ok": false,
+      "python_api": true,
+      "cuda_support": true,
+      "opencl_support": false,
+      "mpi_support": false,
+      "notes": ""
+    },
+    "Meep": {
+      "import_name": "meep",
+      "installed": false,
+      "version": null,
+      "import_ok": false,
+      "gpu_ok": false,
+      "python_api": true,
+      "cuda_support": false,
+      "opencl_support": false,
+      "mpi_support": true,
+      "notes": ""
+    }
+  }
+}

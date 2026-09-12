@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Generated data / simulation outputs
+datasets/h5/*.h5
+datasets/raw/
+sim/gprmax/*.out

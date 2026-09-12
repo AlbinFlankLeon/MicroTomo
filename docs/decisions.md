@@ -1,0 +1,37 @@
+# MicroTomo — Architecture Decisions Log
+
+> Record every significant design choice here. Reverse chronological.
+
+---
+
+## 2026-09-10 — Phase 4: Dataset generation strategy DECIDED
+
+- **Hybrid two-track generation** (matches plan's tiers):
+  1. **`scripts/batch_generate.py`** — FAST analytical forward model: multistatic SFCW ring array (N_antennas annular geometry), first-Born point-cloud scatterers (Clausius-Mossotti contrast), two-way delay phasing, 1/(d_tx*d_rx) spreading, direct-coupling background + enclosure echo, additive noise (--snr-db). **~2.2 samples/s single-core, 1000 samples in ~1 min with -j 8.** Bulk pre-training data.
+  2. **gprMax FDTD** — sparse high-fidelity examples (26-150s/sample). Fine-tuning + validation. Full-wave truth for the analytical model.
+- **HDF5 layout** (documented in `datasets/torch_loader.py`): /samples/NN/{x, x_hat, y} complex64 (F,T), {geometry, eps} float32 (H,W,D), meta JSON. x - x_hat == y guaranteed.
+- **Rationale**: 10k samples via full FDTD at 26-150s each = 3-17 days CPU. Analytical model gives the plan's "coarse pre-train -> fine-tune with full-wave" strategy at 1000x speedup.
+- **Next**: validate analytical model vs gprMax on shared phantom; scorecard filled for gprMax.
+
+## 2026-09-10 — Phase 3: gprMax mini-domain prototype COMPLETE
+
+- **gprMax v3.1.7 CONFIRMED viable** — all 3 mini-domain benchmarks ran (PEC cylinder 26.5s, water vial 147s, random 85.7s on CPU).
+- **Grid resolution is THE bottleneck**: gprMax grid check uses maxfreq = 4x center freq. At 60 GHz, dielectrics need dx <= 0.33mm (water: 0.15mm) — exactly matching the plan's FDTD estimate. Full 200mm domain at 60 GHz = 216M cells / 100GB+ RAM, confirming need for fine-grid GPU or FEniCSx frequency-domain.
+- **Validation strategy**: PEC cylinder at 60 GHz with gaussian (Mie reference S21=+4.4dB) is the canonical validation case. Water + random phantoms run at 10 GHz (control case) to stay on 0.5mm grid.
+- **gprMax syntax gotchas** (documented for future runs):
+  - Comments must be `##` (double hash). Single `#` = command.
+  - `#material: er se mr sm name` — permeability MUST be >= 1, not 0.
+  - Debye: `#add_dispersion_debye: poles d_er tau_s name` — tau in SECONDS.
+  - No negative coordinates; everything in [0, domain] and on grid multiples.
+- **Water @ 60 GHz**: eps_eff ~19, attenuation 20-30 dB/cm → reflection/SAR mode confirmed (transmission fails).
+- **Next**: Phase 4 scalability (full domain + GPU/OpenCL test), Phase 5 scorecard + AI pipeline blueprint.
+
+## 2026-09-10 — Project Kickoff
+
+- **Simulation-first**: No hardware commitment until solver throughput + accuracy validated.
+- **Tool tiers**: Tier 1 = GPU FDTD (gprMax/openEMS), Tier 2 = AI-native/FEM (TorchFDTD/FEniCSx), Tier 3 = RT augmentation (Sionna).
+- **Primary target**: 60 GHz reflection/SAR tomography with air coupling.
+- **Dataset format**: HDF5 for S-params + field snapshots + phantom metadata, PyTorch DataLoader integration.
+- **Platform**: Arch Linux primary, Windows secondary. 0-cost license stack.
+- **Expected hybrid stack**: gprMax/TorchFDTD (UWB GPU FDTD) + FEniCSx (fast CW sweep) + Sionna RT (augmentation).
+- **Validation baseline**: Mie scattering analytical solution (PEC sphere/cylinder) <3dB/10deg S21.

@@ -1,0 +1,17 @@
+## Random Phantom - Mini Domain (50mm cube)
+## MicroTomo Phase 3 - domain randomization test, seed=42
+## 10 GHz CW: freq case 3 from benchmarks.yaml (versatility test).
+
+#domain: 50e-3 50e-3 50e-3
+#dx_dy_dz: 0.5e-3 0.5e-3 0.5e-3
+#time_window: 10e-9
+
+#waveform: sine 1 10e9 mywave
+#hertzian_dipole: z 10e-3 25e-3 25e-3 mywave
+
+#material: 4.69 0 1 0 obj0
+#sphere: 0.0322 0.0289 25e-3 0.0026 obj0
+#material: 7.86 0 1 0 obj1
+#sphere: 0.0302 0.0307 25e-3 0.0028 obj1
+
+#rx: 40e-3 25e-3 25e-3

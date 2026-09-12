@@ -1,0 +1,22 @@
+{
+  "tool": "gprmax",
+  "phantom": "random",
+  "domain": "mini",
+  "gpu": false,
+  "returncode": 0,
+  "wall_time_s": 85.69864418100042,
+  "sim_time_s": null,
+  "output_file": "/home/albin/MicroTomo/sim/gprmax/bench_random_mini.out",
+  "output_size": 261520,
+  "model_info": {
+    "grid": "Domain size: 0.05 x 0.05 x 0.05m (100 x 100 x 100 = 1e+06 cells)",
+    "timestep": "Time step (at CFL limit): 9.62917e-13 secs",
+    "iterations": "Time window: 1e-08 secs (10387 iterations)"
+  },
+  "stdout": "1:  96%|\u2588\u2588\u2588\u2588\u258a| 9937/10387 [01:21<00:03, 129.65it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u2588\u258a| 9951/10387 [01:21<00:03, 131.33it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u2588\u258a| 9965/10387 [01:21<00:03, 125.76it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u2588\u258a| 9978/10387 [01:21<00:03, 118.01it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u2588\u258a| 9990/10387 [01:21<00:03, 118.04it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u258a| 10003/10387 [01:21<00:03, 120.54it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u258a| 10016/10387 [01:21<00:03, 121.71it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u258a| 10030/10387 [01:21<00:02, 125.65it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u258a| 10043/10387 [01:22<00:02, 122.28it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u258a| 10056/10387 [01:22<00:02, 124.20it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u2589| 10069/10387 [01:22<00:02, 122.10it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u2589| 10084/10387 [01:22<00:02, 127.06it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u2589| 10097/10387 [01:22<00:02, 124.20it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u2589| 10111/10387 [01:22<00:02, 128.40it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u2589| 10125/10387 [01:22<00:01, 131.71it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10139/10387 [01:22<00:02, 120.94it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10152/10387 [01:22<00:02, 116.83it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10164/10387 [01:23<00:01, 112.58it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10177/10387 [01:23<00:01, 116.08it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10191/10387 [01:23<00:01, 121.00it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10204/10387 [01:23<00:01, 118.43it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10216/10387 [01:23<00:01, 114.93it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2589| 10229/10387 [01:23<00:01, 118.44it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10241/10387 [01:23<00:01, 118.29it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10253/10387 [01:23<00:01, 117.41it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10265/10387 [01:23<00:01, 114.04it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10278/10387 [01:24<00:00, 115.91it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10290/10387 [01:24<00:00, 115.82it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10302/10387 [01:24<00:00, 112.46it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10314/10387 [01:24<00:00, 113.40it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2589| 10327/10387 [01:24<00:00, 115.86it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2589| 10342/10387 [01:24<00:00, 123.81it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2589| 10355/10387 [01:24<00:00, 125.46it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2589| 10368/10387 [01:24<00:00, 119.04it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2589| 10382/10387 [01:24<00:00, 122.38it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2588| 10387/10387 [01:24<00:00, 122.32it/s]\nMemory (RAM) used: ~171MB\nSolving time [HH:MM:SS]: 0:01:24.913724\n\n=== Simulation completed in [HH:MM:SS]: 0:01:25.178701 ========================\n\n",
+  "stderr": "",
+  "mie_comparison": {
+    "status": "skipped",
+    "reason": "not a PEC cylinder"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "tool": "gprmax",
+  "phantom": "pec_cylinder",
+  "domain": "mini",
+  "gpu": false,
+  "returncode": 0,
+  "wall_time_s": 26.527866538992384,
+  "sim_time_s": null,
+  "output_file": "/home/albin/MicroTomo/sim/gprmax/bench_pec_cylinder_mini.out",
+  "output_size": 87040,
+  "model_info": {
+    "grid": "Domain size: 0.05 x 0.05 x 0.05m (100 x 100 x 100 = 1e+06 cells)",
+    "timestep": "Time step (at CFL limit): 9.62917e-13 secs",
+    "iterations": "Time window: 3e-09 secs (3117 iterations)"
+  },
+  "stdout": "1:  85%|\u2588\u2588\u2588\u2588\u2588 | 2657/3117 [00:21<00:03, 121.29it/s]\nRunning simulation, model 1/1:  86%|\u2588\u2588\u2588\u2588\u2588\u258f| 2672/3117 [00:22<00:03, 127.37it/s]\nRunning simulation, model 1/1:  86%|\u2588\u2588\u2588\u2588\u2588\u258f| 2685/3117 [00:22<00:03, 124.37it/s]\nRunning simulation, model 1/1:  87%|\u2588\u2588\u2588\u2588\u2588\u258f| 2699/3117 [00:22<00:03, 127.14it/s]\nRunning simulation, model 1/1:  87%|\u2588\u2588\u2588\u2588\u2588\u258f| 2713/3117 [00:22<00:03, 130.27it/s]\nRunning simulation, model 1/1:  87%|\u2588\u2588\u2588\u2588\u2588\u258f| 2727/3117 [00:22<00:03, 123.81it/s]\nRunning simulation, model 1/1:  88%|\u2588\u2588\u2588\u2588\u2588\u258e| 2740/3117 [00:22<00:03, 115.33it/s]\nRunning simulation, model 1/1:  88%|\u2588\u2588\u2588\u2588\u2588\u258e| 2752/3117 [00:22<00:03, 108.41it/s]\nRunning simulation, model 1/1:  89%|\u2588\u2588\u2588\u2588\u2588\u258e| 2765/3117 [00:22<00:03, 113.36it/s]\nRunning simulation, model 1/1:  89%|\u2588\u2588\u2588\u2588\u2588\u258e| 2777/3117 [00:22<00:02, 113.37it/s]\nRunning simulation, model 1/1:  90%|\u2588\u2588\u2588\u2588\u2588\u258e| 2791/3117 [00:23<00:02, 118.56it/s]\nRunning simulation, model 1/1:  90%|\u2588\u2588\u2588\u2588\u2588\u258d| 2805/3117 [00:23<00:02, 122.31it/s]\nRunning simulation, model 1/1:  90%|\u2588\u2588\u2588\u2588\u2588\u258d| 2818/3117 [00:23<00:02, 124.38it/s]\nRunning simulation, model 1/1:  91%|\u2588\u2588\u2588\u2588\u2588\u258d| 2832/3117 [00:23<00:02, 125.18it/s]\nRunning simulation, model 1/1:  91%|\u2588\u2588\u2588\u2588\u2588\u258d| 2846/3117 [00:23<00:02, 127.96it/s]\nRunning simulation, model 1/1:  92%|\u2588\u2588\u2588\u2588\u2588\u258c| 2859/3117 [00:23<00:02, 122.59it/s]\nRunning simulation, model 1/1:  92%|\u2588\u2588\u2588\u2588\u2588\u258c| 2872/3117 [00:23<00:01, 122.65it/s]\nRunning simulation, model 1/1:  93%|\u2588\u2588\u2588\u2588\u2588\u258c| 2885/3117 [00:23<00:01, 122.67it/s]\nRunning simulation, model 1/1:  93%|\u2588\u2588\u2588\u2588\u2588\u258c| 2898/3117 [00:23<00:01, 120.21it/s]\nRunning simulation, model 1/1:  93%|\u2588\u2588\u2588\u2588\u2588\u258c| 2912/3117 [00:24<00:01, 124.53it/s]\nRunning simulation, model 1/1:  94%|\u2588\u2588\u2588\u2588\u2588\u258b| 2925/3117 [00:24<00:01, 120.37it/s]\nRunning simulation, model 1/1:  94%|\u2588\u2588\u2588\u2588\u2588\u258b| 2939/3117 [00:24<00:01, 123.12it/s]\nRunning simulation, model 1/1:  95%|\u2588\u2588\u2588\u2588\u2588\u258b| 2953/3117 [00:24<00:01, 127.32it/s]\nRunning simulation, model 1/1:  95%|\u2588\u2588\u2588\u2588\u2588\u258b| 2967/3117 [00:24<00:01, 130.79it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u2588\u2588\u258b| 2981/3117 [00:24<00:01, 129.33it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u2588\u2588\u258a| 2994/3117 [00:24<00:00, 127.84it/s]\nRunning simulation, model 1/1:  96%|\u2588\u2588\u2588\u2588\u2588\u258a| 3007/3117 [00:24<00:00, 124.66it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u2588\u2588\u258a| 3021/3117 [00:24<00:00, 126.56it/s]\nRunning simulation, model 1/1:  97%|\u2588\u2588\u2588\u2588\u2588\u258a| 3035/3117 [00:24<00:00, 129.25it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2588\u2588\u258a| 3048/3117 [00:25<00:00, 125.34it/s]\nRunning simulation, model 1/1:  98%|\u2588\u2588\u2588\u2588\u2588\u2589| 3061/3117 [00:25<00:00, 123.90it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2588\u2588\u2589| 3074/3117 [00:25<00:00, 122.65it/s]\nRunning simulation, model 1/1:  99%|\u2588\u2588\u2588\u2588\u2588\u2589| 3088/3117 [00:25<00:00, 127.23it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2588\u2588\u2589| 3103/3117 [00:25<00:00, 131.71it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2588\u2588\u2588| 3117/3117 [00:25<00:00, 129.64it/s]\nRunning simulation, model 1/1: 100%|\u2588\u2588\u2588\u2588\u2588\u2588| 3117/3117 [00:25<00:00, 121.61it/s]\nMemory (RAM) used: ~172MB\nSolving time [HH:MM:SS]: 0:00:25.630601\n\n=== Simulation completed in [HH:MM:SS]: 0:00:25.917208 ========================\n\n",
+  "stderr": "",
+  "mie_comparison": {
+    "status": "error",
+    "error": "Accessing a group is done with bytes or str, not <class 'slice'>",
+    "mie_ref": [
+      4.3990605675779815,
+      -167.44502658251872
+    ]
+  }
+}
