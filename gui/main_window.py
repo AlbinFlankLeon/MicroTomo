@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+from gui.main import View, _draw_scene
 
 ROOT = Path(__file__).parent.parent
 CONFIG_DIR = Path(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))) / "microtomo"
@@ -37,7 +38,6 @@ class MainWindow:
         )
         from pyvistaqt import QtInteractor
 
-        from gui.main import View, _draw_scene
         from gui.panel import SimPanel
 
         win = QMainWindow()

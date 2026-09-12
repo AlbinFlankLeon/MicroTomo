@@ -198,9 +198,11 @@ class SimPanel(QWidget):
 
     def _build_ui(self) -> None:
         outer = QVBoxLayout(self)
-        outer.addWidget(QLabel(
-            "← drag to rotate  ·  scroll to zoom  ·  right-click to pan",
-        ))
+        outer.setContentsMargins(8, 8, 8, 8)
+        outer.setSpacing(6)
+        hint = QLabel("← drag to rotate  ·  scroll to zoom  ·  right-click to pan")
+        hint.setStyleSheet("color: #666; font-size: 11px; padding-bottom: 4px;")
+        outer.addWidget(hint)
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
         form = QWidget()
