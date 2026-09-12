@@ -1,5 +1,22 @@
 # MicroTomo — Architecture Decisions Log
 
+## 2026-09-12 — Signal model & reconstruction lock-in
+
+- **Forward = SFCW surface-scatterer phase sum** (see `docs/math-signal-model.md`):
+  `y[f,ch] = Σ_p γ_p/(d_i d_j) · (0.3+0.7 n̂·b̂) · e^{−j2πfτ}`, τ = two-way delay.
+  Chosen because the science target is a *surface contour* and full-wave FDTD
+  at 60 GHz is CPU-infeasible (T7); delay is carrier-independent physics.
+- **Reconstruction baseline = DAS / matched filter**, the exact adjoint `I = H†y`
+  of the forward operator. Parameter-free null model; the torch_loader HDF5 is
+  the training bus for a future learned inverse. Range resolution is
+  `c/(2B) ≈ 2.1 cm`; 1 cm verdict claims are grid/resolution-limited, not an
+  algorithm property.
+- **Background is modelled** (direct coupling, monostatic self, optional
+  nearest-face image bounce) and `x − x̂ = y` exactly — the scattered channel is
+  the DAS input; leakage handling is testable, not abstracted away.
+- **Metrics**: two-sided chamfer (median = verdict), % ≤ 1 cm, detect_feature
+  probe. Empty clouds never crash (`inf`/0.0).
+
 ## 2026-09-12 — Sparsity study realignment + T7 trust flag
 
 - **Product realignment**: gold-standard Mie/FDTD scorecards (Phases 3-5)

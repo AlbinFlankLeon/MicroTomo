@@ -129,7 +129,10 @@ produce surface contour in a 10 cm PoC chamber?*
 `reports/sparsity_verdict.{md,json}`. 3D view: `./launch_gui.sh --scene 42
 --transceivers 8`.
 
-Delivered per ticket (all tests green: `pytest tests/`, 32 tests):
+Delivered per ticket (all tests green: `pytest tests/`, 46 tests):
+- **Math**: full derivation + motivations in `docs/math-signal-model.md`
+  (SFCW surface-scatterer forward = delay-phase sum; DAS = its adjoint;
+  range resolution ~2.1 cm at 7 GHz bandwidth; fits are honest, trust-flagged).
 - `phantoms/veggie.py` — seeded produce library (ellipsoid / rounded-cylinder /
   pepper-with-stem + optional pedestal); surface scatterers, closed mesh, voxels.
 - `sim/forward_surface.py` + `sim/transceivers.py` — reflection-mode SFCW
