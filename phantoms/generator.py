@@ -139,10 +139,25 @@ def random_ellipsoid(domain="mini", output_path=None, seed=None):
     return content
 
 
+def veggie_library_generator(domain="mini", output_path=None, seed=None, **kw):
+    """Generate a veggie phantom scene (scatterers + mesh + voxels)."""
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from phantoms import veggie
+
+    chamber = {"mini": "10cm", "full": "50cm"}.get(domain, "10cm")
+    seed = seed if seed is not None else 0
+    prefix = str(Path(output_path or "phantom_veg").with_suffix(""))
+    veggie.main(["--seed", str(seed), "--chamber", chamber, "--n-shapes", "1", "--out-prefix", prefix])
+    return f"veggie scene written to {prefix}_* (scatter/mesh/vol/meta)"
+
+
 GENERATORS = {
     "pec_cylinder": pec_cylinder_input,
     "water_vial": water_vial_input,
     "random": random_ellipsoid,
+    "veggie_library": veggie_library_generator,
 }
 
 
@@ -163,7 +178,7 @@ def main():
 
     gen = GENERATORS[args.type]
     kwargs = {"domain": args.domain, "output_path": args.output}
-    if args.type == "random":
+    if args.type in ("random", "veggie_library"):
         kwargs["seed"] = args.seed
     content = gen(**kwargs)
     if not args.output:
