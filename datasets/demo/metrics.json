@@ -1,0 +1,15 @@
+{
+  "n_scatter": 19500,
+  "n_recon": 554,
+  "chamfer_mean_cm": 0.4,
+  "chamfer_median_cm": 0.231,
+  "chamfer_max_cm": 4.771,
+  "pct_within_1cm": 97.59,
+  "detect_feature_0": {
+    "detected": true,
+    "frac": 0.5595667870036101,
+    "n_points": 554
+  },
+  "das_threshold": 8819.017029133685,
+  "wall_time_s": 217.8
+}

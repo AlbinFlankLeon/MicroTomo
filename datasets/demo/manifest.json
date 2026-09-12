@@ -1,0 +1,14 @@
+{
+  "version": "viewer-v1",
+  "seed": 42,
+  "chamber_m": 0.1,
+  "mode": "scan",
+  "n_transceivers": 2,
+  "n_stations": 24,
+  "files": {
+    "scene": "scene.npy",
+    "recon": "recon.npy",
+    "metrics": "metrics.json",
+    "icon": "icon.png"
+  }
+}
