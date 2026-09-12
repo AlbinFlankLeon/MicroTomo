@@ -180,7 +180,7 @@ class SimState:
         _, _, y = model.phase_history(positions, write_noise=noise)
 
         pts, _, thr = das_beamform(y, positions, freqs, self.chamber_m,
-                                   grid=self.grid, threshold_quantile=0.96,
+                                   grid=self.grid, threshold_quantile=0.995,
                                    top_m=1500)
         recon = pts[:, :3]
         ch = chamfer(recon, truth)

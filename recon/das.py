@@ -70,7 +70,33 @@ def das_beamform(
     if float(np.max(mag)) < 1e-30:                      # empty scene -> no surface
         return np.empty((0, 3)), image, 0.0
     thr = float(np.quantile(mag, threshold_quantile))
-    idx = np.flatnonzero(mag >= thr)
+    # Local maxima in the magnitude volume (surface peaks)
+    # A voxel is a local maximum if it's >= all 26 neighbors AND above threshold
+    pad = np.pad(mag, 1, mode="constant", constant_values=-1.0)
+    # Build 26-neighborhood max for each voxel
+    nb_max = np.full_like(mag, -1.0)
+    for dx in (-1, 0, 1):
+        for dy in (-1, 0, 1):
+            for dz in (-1, 0, 1):
+                if dx == 0 and dy == 0 and dz == 0:
+                    continue
+                nb = pad[1+dx:1+dx+grid, 1+dy:1+dy+grid, 1+dz:1+dz+grid]
+                np.maximum(nb_max, nb, out=nb_max)
+    is_peak = (mag >= nb_max) & (mag >= thr)
+    idx = np.flatnonzero(is_peak)
+    if len(idx) == 0:
+        # fallback: boundary of mask
+        mask = mag >= thr
+        pad_m = np.pad(mask, 1, mode="constant", constant_values=False)
+        boundary = (
+            (mask & ~pad_m[2:, 1:-1, 1:-1]) |
+            (mask & ~pad_m[:-2, 1:-1, 1:-1]) |
+            (mask & ~pad_m[1:-1, 2:, 1:-1]) |
+            (mask & ~pad_m[1:-1, :-2, 1:-1]) |
+            (mask & ~pad_m[1:-1, 1:-1, 2:]) |
+            (mask & ~pad_m[1:-1, 1:-1, :-2])
+        )
+        idx = np.flatnonzero(boundary)
     if top_m is not None and len(idx) > top_m:
         order = np.argsort(mag.ravel()[idx])[::-1][:top_m]
         idx = idx[order]
