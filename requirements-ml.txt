@@ -1,0 +1,4 @@
+# Optional — only needed for datasets/torch_loader.py (ML training loaders).
+# Install separately: pip install -r requirements-ml.txt
+# The GUI + simulator do NOT require PyTorch.
+torch>=2.1

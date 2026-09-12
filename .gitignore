@@ -7,3 +7,7 @@ __pycache__/
 datasets/h5/*.h5
 datasets/raw/
 sim/gprmax/*.out
+
+# Release build output
+dist/
+.pytest_cache/

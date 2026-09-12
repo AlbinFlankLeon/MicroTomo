@@ -20,15 +20,15 @@
   "tools": {
     "gprMax": {
       "import_name": "gprmax",
-      "installed": false,
-      "version": null,
+      "installed": true,
+      "version": "3.1.7",
       "import_ok": false,
       "gpu_ok": true,
       "python_api": true,
       "cuda_support": true,
       "opencl_support": true,
       "mpi_support": false,
-      "notes": ""
+      "notes": "/home/albin/MicroTomo/.venv/lib/python3.14/site-packages"
     },
     "torchfdtd": {
       "import_name": "torchfdtd",
