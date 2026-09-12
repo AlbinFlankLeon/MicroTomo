@@ -10,11 +10,13 @@ interactively compare the true geometry against the DAS result.
 
 ```bash
 # download the latest release
-wget https://github.com/AlbinFlankLeon/MicroTomo/releases/latest/download/microtomo-0.1.0.tar.gz
-tar -xzf microtomo-0.1.0.tar.gz && cd microtomo-0.1.0
+wget https://github.com/AlbinFlankLeon/MicroTomo/releases/latest/download/microtomo-0.2.0.tar.gz
+tar -xzf microtomo-0.2.0.tar.gz && cd microtomo-0.2.0
 bash install.sh
 ./launch_gui.sh
 ```
+
+Or grab the newest version from the **[download page](https://albinflankleon.github.io/MicroTomo/download.html)**.
 
 Or clone the source and build from there:
 
