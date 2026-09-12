@@ -90,7 +90,7 @@ def editor(qapp):
 
 def test_editor_build_and_run(editor):
     mw, _win = editor
-    assert mw.win.windowTitle() == "MicroTomo — simulation editor"
+    assert mw.win.windowTitle().startswith("MicroTomo — simulation editor (")
     # shrink the run to keep the test fast
     mw.panel.grid.setValue(8)
     mw.panel.n_freq.setValue(8)

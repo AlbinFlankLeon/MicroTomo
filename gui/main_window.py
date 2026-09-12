@@ -10,10 +10,12 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 from pathlib import Path
 
 import numpy as np
 
+ROOT = Path(__file__).parent.parent
 CONFIG_DIR = Path(os.environ.get("XDG_CONFIG_HOME", os.path.expanduser("~/.config"))) / "microtomo"
 CONFIG_FILE = CONFIG_DIR / "sim_state.json"
 
@@ -38,7 +40,7 @@ class MainWindow:
         from gui.panel import SimPanel
 
         win = QMainWindow()
-        win.setWindowTitle("MicroTomo — simulation editor")
+        win.setWindowTitle(f"MicroTomo — simulation editor ({_version()})")
         win.resize(1440, 860)
 
         central = QWidget()
@@ -182,6 +184,17 @@ class MainWindow:
         self.panel.set_state(st)
         self.refresh_scene()
         self.status.setText(f"loaded configuration ← {CONFIG_FILE}")
+
+
+def _version() -> str:
+    """Short git hash, or 'dev' when not in a git checkout."""
+    try:
+        out = subprocess.run(
+            ["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
+            capture_output=True, text=True, timeout=2)
+        return out.stdout.strip() or "dev"
+    except Exception:
+        return "dev"
 
 
 def build_editor_window(app):
