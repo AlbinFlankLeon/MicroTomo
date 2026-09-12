@@ -1,5 +1,25 @@
 # MicroTomo — Architecture Decisions Log
 
+## 2026-09-12 — Sparsity study realignment + T7 trust flag
+
+- **Product realignment**: gold-standard Mie/FDTD scorecards (Phases 3-5)
+  shelved. One question now drives the work: *can a sparse 60 GHz rig map a
+  produce surface contour in a 10 cm PoC?* Tickets live in
+  `.scratch/sparsity-study/`; the single seam is `scripts/sparsity_study.py`.
+- **Forward model choice**: reflection-mode SFCW point-surface scatterer
+  (two-way TOF + illumination culling + diffuse/specular return) written to
+  the existing torch_loader HDF5 layout. NOT a full-wave solver.
+- **Physics gate honesty**: the spec required a gprMax cross-validation gate
+  (envelope correlation ≥ 0.9, peak range error ≤ 0.5 cm). It is **NOT
+  EXECUTABLE on this CPU**: 60 GHz forces dx ≤ 0.17 mm (~27M cells), and the
+  10 GHz scaled fallback is unrepresentative (50 mm box ≈ 1.7 λ; every probe
+  sub-wavelength → resonance-dominated, which the single-reflection model
+  rightly doesn't match). Decision: do NOT fake it — flag the analytical
+  numbers **UNTRUSTED** in the verdict report until a GPU/60 GHz check exists.
+- **Verdict report contract**: `reports/sparsity_verdict.{md,json}` carries a
+  trust flag + grid-floor caveat; green ≤ 1.5 cm / yellow ≤ 3 cm median
+  chamfer; cost = 1 pt/RF channel (+motor for scan), complexity +2 for scan.
+
 > Record every significant design choice here. Reverse chronological.
 
 ---

@@ -118,6 +118,38 @@ Validation: Error vs analytical Mie scattering <3 dB / 10 deg for S21 mag/phase.
 ### Tier 3 — Fast Approximate / Hybrid
 6. **Sionna RT** (NVIDIA) — Ray tracing, CUDA, 1000x faster. Coarse pre-training → fine-tune with full-wave.
 
+## Sparsity Study (2026-09-12) — transceiver-count feasibility
+
+Realignment: Phases 3/4/5 (Mie/FDTD/RX-pipeline scorecards) are shelved in
+favor of one product question: *can a sparse 60 GHz transceiver rig map a
+produce surface contour in a 10 cm PoC chamber?*
+
+**Single seam**: `scripts/sparsity_study.py --static --scan --chamber 50cm
+--n-samples 3 --n-freq 64 --grid 32 --n-stations 12 --seed 1` →
+`reports/sparsity_verdict.{md,json}`. 3D view: `./launch_gui.sh --scene 42
+--transceivers 8`.
+
+Delivered per ticket (all tests green: `pytest tests/`, 32 tests):
+- `phantoms/veggie.py` — seeded produce library (ellipsoid / rounded-cylinder /
+  pepper-with-stem + optional pedestal); surface scatterers, closed mesh, voxels.
+- `sim/forward_surface.py` + `sim/transceivers.py` — reflection-mode SFCW
+  57–64 GHz (two-way TOF, illumination culling, diffuse+specular return,
+  direct coupling + metal-wall echo), static ring + turntable-scan layouts;
+  HDF5 matches `datasets/torch_loader.py`.
+- `recon/das.py` — delay-and-sum surface cloud (threshold + top-M).
+- `metrics/contour_metrics.py` — chamfer (mean/median/max), %≤1cm, detect_feature.
+- `gui/main.py` — scene view (seed or `.npy`, transceiver ring, recon overlay).
+
+**T7 cross-validation (`reports/analytical_vs_gprmax.md`): the spec gate is
+NOT EXECUTABLE on this hardware.** 60 GHz full-wave FDTD needs dx ≈ 0.17 mm
+(~27M cells, CPU-infeasible); scaled-carrier (10 GHz) FDTD is not
+representative — the 50 mm box and every probe are sub-wavelength resonators
+(Mie ka≈0.84 sphere, 0.67 λ patch slab), which a first-order point-scatterer
+model rightly does not match. Per the spec fallback, **the study numbers are
+flagged UNTRUSTED until a GPU/60 GHz cross-validation exists** — they are a
+self-consistent relative comparison only. Exact two-way-delay physics IS
+validated in `tests/test_forward_surface.py`.
+
 ## Hardware Assumptions
 
 - **Weak**: RX 5700 XT 8GB or RTX 4060, 32GB RAM — FEniCSx CW + downsampled FDTD (dx 0.5mm)
