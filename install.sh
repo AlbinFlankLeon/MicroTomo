@@ -38,8 +38,17 @@ fi
 echo ">> installing dependencies (this can take a few minutes)…"
 .venv/bin/pip install -r requirements.txt
 
-echo ">> verifying install…"
-.venv/bin/python scripts/install_check.py
+echo ">> verifying the Python environment…"
+.venv/bin/python - <<'PY'
+import numpy, scipy, h5py, yaml, pyvista, pyvistaqt, PyQt6
+print("   runtime dependencies OK")
+PY
+
+# Optional: the gprMax FDTD toolchain is only needed for the validation
+# pipeline, NOT for the GUI/editor. Never let this abort the install.
+echo ">> optional EM-toolchain viability check (gprMax etc.):"
+.venv/bin/python scripts/install_check.py || \
+    echo "   (some optional tools absent — the GUI still installs fine)"
 
 if [[ ! -f datasets/demo/manifest.json ]]; then
     echo ">> demo package missing — building it now (one-time, a few minutes)…"
